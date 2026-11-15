@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Clinical Assessment — CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header & Quick Demo Loader -->
+    <div class="row align-items-center mb-4">
+        <div class="col-lg-8">
+            <h2 class="fw-bold mb-1" style="color: var(--primary-color);">
+                <i class="bi bi-clipboard2-pulse text-teal me-2"></i>Patient Clinical Assessment Form
+            </h2>
+            <p class="text-muted mb-0">
+                Input the 13 clinical biomarkers to evaluate the probability of coronary artery disease using our trained Random Forest model.
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <div class="btn-group shadow-sm" role="group">
+                <button type="button" class="btn btn-outline-success btn-sm fw-semibold" onclick="loadDemoCase('healthy')">
+                    <i class="bi bi-person-check-fill me-1"></i> Demo: Healthy Case
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm fw-semibold" onclick="loadDemoCase('high_risk')">
+                    <i class="bi bi-person-exclamation me-1"></i> Demo: High-Risk Case
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Alert Banner for Demo Case Loading -->
+    <div id="demo-alert" class="alert alert-info py-2 d-none shadow-sm" role="alert"></div>
+
+    <!-- Prediction Form -->
+    <form action="{{ url_for('predict') }}" method="POST" class="needs-validation" novalidate>
+        <div class="row g-4">
+            
+            <!-- SECTION 1: Demographics & Resting Vitals -->
+            <div class="col-lg-6">
+                <div class="custom-card p-4 h-100">
+                    <div class="form-section-title">
+                        <i class="bi bi-person-badge text-primary"></i> 1. Demographics & Baseline Vitals
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="Age" class="form-label">Patient Age (years) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="Age" name="Age" min="18" max="100" value="55" required>
+                            <div class="form-text">Range: 20 to 90 years</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Sex" class="form-label">Biological Sex <span class="text-danger">*</span></label>
+                            <select class="form-select" id="Sex" name="Sex" required>
+                                <option value="1" selected>Male (1)</option>
+                                <option value="0">Female (0)</option>
+                            </select>
+                            <div class="form-text">Demographic risk tier</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="RestingBP" class="form-label">Resting Blood Pressure (mm Hg) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="RestingBP" name="RestingBP" min="80" max="240" value="130" required>
+                            <div class="form-text">Systolic BP upon hospital admission</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ChestPainType" class="form-label">Chest Pain Classification <span class="text-danger">*</span></label>
+                            <select class="form-select" id="ChestPainType" name="ChestPainType" required>
+                                <option value="1">Type 1: Typical Angina</option>
+                                <option value="2">Type 2: Atypical Angina</option>
+                                <option value="3">Type 3: Non-Anginal Discomfort</option>
+                                <option value="4" selected>Type 4: Asymptomatic</option>
+                            </select>
+                            <div class="form-text">Symptomatic angina description</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Metabolic & Serological Markers -->
+            <div class="col-lg-6">
+                <div class="custom-card p-4 h-100">
+                    <div class="form-section-title">
+                        <i class="bi bi-droplet-half text-danger"></i> 2. Serology & Metabolic Panel
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="Cholesterol" class="form-label">Serum Cholesterol (mg/dl) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="Cholesterol" name="Cholesterol" min="100" max="600" value="245" required>
+                            <div class="form-text">Desirable: &lt; 200 mg/dl</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="FastingBS" class="form-label">Fasting Blood Sugar <span class="text-danger">*</span></label>
+                            <select class="form-select" id="FastingBS" name="FastingBS" required>
+                                <option value="0" selected>&le; 120 mg/dl (Normal)</option>
+                                <option value="1">&gt; 120 mg/dl (Diabetic / Pre-diabetic)</option>
+                            </select>
+                            <div class="form-text">Glycemic risk threshold</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="RestingECG" class="form-label">Resting Electrocardiogram (ECG) <span class="text-danger">*</span></label>
+                            <select class="form-select" id="RestingECG" name="RestingECG" required>
+                                <option value="0" selected>0: Normal Sinus Rhythm</option>
+                                <option value="1">1: ST-T Wave Abnormality (T wave inversion / ST elevation)</option>
+                                <option value="2">2: Left Ventricular Hypertrophy (Estes criteria)</option>
+                            </select>
+                            <div class="form-text">Baseline electrical cardiac morphology</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Exercise Treadmill Stress Test (TMT) -->
+            <div class="col-lg-6">
+                <div class="custom-card p-4 h-100">
+                    <div class="form-section-title">
+                        <i class="bi bi-speedometer2 text-success"></i> 3. Exercise Stress Test (Treadmill)
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="MaxHR" class="form-label">Maximum Heart Rate (bpm) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="MaxHR" name="MaxHR" min="60" max="230" value="150" required>
+                            <div class="form-text">Peak achievable exertion heart rate</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ExerciseAngina" class="form-label">Exercise-Induced Angina <span class="text-danger">*</span></label>
+                            <select class="form-select" id="ExerciseAngina" name="ExerciseAngina" required>
+                                <option value="0" selected>No (Absence of pain during stress)</option>
+                                <option value="1">Yes (Chest pain provoked by exertion)</option>
+                            </select>
+                            <div class="form-text">Exertional myocardial ischemia</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Oldpeak" class="form-label">ST Depression (Oldpeak in mm) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.1" class="form-control" id="Oldpeak" name="Oldpeak" min="0.0" max="8.0" value="1.0" required>
+                            <div class="form-text">ST depression induced by exercise vs rest</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ST_Slope" class="form-label">Slope of Peak Exercise ST Segment <span class="text-danger">*</span></label>
+                            <select class="form-select" id="ST_Slope" name="ST_Slope" required>
+                                <option value="1">Type 1: Upsloping (Physiologically Normal)</option>
+                                <option value="2" selected>Type 2: Flat (Equivocal / Ischemic)</option>
+                                <option value="3">Type 3: Downsloping (Severe Ischemia)</option>
+                            </select>
+                            <div class="form-text">ST vector recovery angle</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: Anatomical & Nuclear Imaging -->
+            <div class="col-lg-6">
+                <div class="custom-card p-4 h-100">
+                    <div class="form-section-title">
+                        <i class="bi bi-radioactive text-warning"></i> 4. Fluoroscopy & Nuclear Imaging
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="CA" class="form-label">Fluoroscopy Vessel Count (CA) <span class="text-danger">*</span></label>
+                            <select class="form-select" id="CA" name="CA" required>
+                                <option value="0" selected>0 Major Vessels Colored (&gt;50% stenosis)</option>
+                                <option value="1">1 Major Vessel Colored</option>
+                                <option value="2">2 Major Vessels Colored</option>
+                                <option value="3">3 Major Vessels Colored</option>
+                            </select>
+                            <div class="form-text">Calcified coronary vessels via X-ray</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Thal" class="form-label">Thallium Nuclear Stress Scan <span class="text-danger">*</span></label>
+                            <select class="form-select" id="Thal" name="Thal" required>
+                                <option value="3" selected>Type 3: Normal Myocardial Perfusion</option>
+                                <option value="6">Type 6: Fixed Defect (Permanent Infarct Scar)</option>
+                                <option value="7">Type 7: Reversible Defect (Active Ischemia)</option>
+                            </select>
+                            <div class="form-text">Radioisotope myocardial scintigraphy</div>
+                        </div>
+                        <div class="col-12 mt-4 text-center">
+                            <div class="p-3 rounded bg-light border text-muted small">
+                                <i class="bi bi-info-circle me-1 text-teal"></i>
+                                All 13 clinical biomarkers will be standardized using the production <code>StandardScaler</code> and evaluated via the <code>Random Forest</code> ensemble model.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Submission Action Bar -->
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary-custom btn-lg px-5 shadow">
+                    <i class="bi bi-shield-check me-2"></i> Compute Diagnostic Assessment
+                </button>
+                <button type="reset" class="btn btn-outline-secondary btn-lg ms-2 px-4">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Form
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

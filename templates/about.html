@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}About Project & Architecture — CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        
+        <!-- Left Column: Project Overview & Objectives -->
+        <div class="col-lg-8">
+            <div class="custom-card p-4 mb-4 shadow-sm">
+                <h3 class="fw-bold mb-3" style="color: var(--primary-color);">
+                    <i class="bi bi-heart-pulse-fill text-danger me-2"></i>Project Overview & Clinical Objectives
+                </h3>
+                <p class="text-secondary leading-relaxed">
+                    <strong>CardioPredict</strong> is a machine learning clinical decision-support system engineered for the early detection and risk stratification of coronary artery disease. Cardiovascular diseases (CVDs) remain the leading cause of mortality worldwide, accounting for an estimated 17.9 million lives each year according to the World Health Organization (WHO).
+                </p>
+                <p class="text-secondary leading-relaxed mb-0">
+                    The objective of this academic data science capstone project is to demonstrate end-to-end data science lifecycle execution: from raw medical data ingestion, rigorous statistical auditing, and inferential hypothesis testing, to model benchmarking, artifact serialization, and web deployment.
+                </p>
+            </div>
+
+            <!-- Methodology / Completed Project Lifecycle -->
+            <div class="custom-card p-4 mb-4 shadow-sm">
+                <h4 class="fw-bold mb-3" style="color: var(--primary-color);">
+                    <i class="bi bi-diagram-3-fill text-teal me-2"></i>Completed Project Lifecycle (Phases 1–9)
+                </h4>
+                <div class="list-group list-group-flush small">
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 1: Project Setup & Data Ingestion</strong> — Verified Cleveland raw data, resolved missing headers, binarized diagnosis.</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 2: Data Cleaning & Preprocessing</strong> — Mode imputation for <code>CA</code> and <code>Thal</code>, range boundary validation, int64 type casting.</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 3: Descriptive Statistics & EDA</strong> — 12 summary metrics (Mean, Median, Mode, Variance, IQR, Skewness, Kurtosis).</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 4: High-Resolution Data Visualizations</strong> — 10 clinical charts (Histograms, Box plots, Violin, Heatmaps, Scatter).</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 5: Inferential Hypothesis Testing</strong> — SciPy T-Test, Chi-Square test, One-Way ANOVA, and Pearson significance.</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 6: Data Preprocessing Pipeline</strong> — Stratified 80/20 train-test split, <code>StandardScaler</code> fitting and artifact persistence.</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 7: Machine Learning Model Training</strong> — Trained 5 distinct algorithms (LR, DT, RF, SVM, KNN) with hyperparameter tuning.</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 8: Comprehensive Model Evaluation</strong> — Multi-criteria benchmarking, ROC-AUC (0.9654), best model serialization.</div>
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                        <div><strong>Phase 9: Production Flask Web Application</strong> — Clean UI, patient risk inference, interactive analytics dashboard.</div>
+                        <span class="badge bg-primary"><i class="bi bi-broadcast me-1"></i> Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="custom-card p-4 shadow-sm">
+                <h4 class="fw-bold mb-3" style="color: var(--primary-color);">
+                    <i class="bi bi-layers-fill text-primary me-2"></i>Full-Stack Technology Suite
+                </h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 rounded bg-light border">
+                            <h6 class="fw-bold text-dark"><i class="bi bi-terminal me-1"></i> Backend & Computation</h6>
+                            <ul class="mb-0 small text-secondary ps-3">
+                                <li>Python 3.13 (Core runtime)</li>
+                                <li>Flask 3.0 (WSGI micro-framework)</li>
+                                <li>Scikit-Learn (Model estimators & pipelines)</li>
+                                <li>SciPy (Inferential statistical hypothesis testing)</li>
+                                <li>Pandas & NumPy (Vectorized tabular processing)</li>
+                                <li>Joblib (High-performance object serialization)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded bg-light border">
+                            <h6 class="fw-bold text-dark"><i class="bi bi-window-sidebar me-1"></i> Frontend & Visuals</h6>
+                            <ul class="mb-0 small text-secondary ps-3">
+                                <li>HTML5 & CSS3 (Semantic markup & styling)</li>
+                                <li>Bootstrap 5.3 (Responsive grid layout)</li>
+                                <li>Bootstrap Icons (Healthcare iconography)</li>
+                                <li>Vanilla JavaScript (Form validation & demo loader)</li>
+                                <li>Matplotlib 3.11 & Seaborn 0.13 (300 DPI EDA charts)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Dataset & Metadata -->
+        <div class="col-lg-4">
+            <!-- Dataset Metadata Card -->
+            <div class="custom-card p-4 mb-4 shadow-sm">
+                <h5 class="fw-bold mb-3" style="color: var(--primary-color);">
+                    <i class="bi bi-database-fill text-info me-2"></i>Dataset Architecture
+                </h5>
+                <ul class="list-unstyled small mb-0 d-flex flex-column gap-2 text-secondary">
+                    <li><strong>Repository:</strong> UCI Machine Learning Repository</li>
+                    <li><strong>Collection Center:</strong> Cleveland Clinic Foundation, Ohio, USA</li>
+                    <li><strong>Primary Principal Investigator:</strong> Robert Detrano, M.D., Ph.D.</li>
+                    <li><strong>Total Patient Records:</strong> 303 cases</li>
+                    <li><strong>Clinical Attributes:</strong> 13 predictors + 1 binary target</li>
+                    <li><strong>Class Distribution:</strong> 164 Healthy (54.1%) vs. 139 Heart Disease (45.9%)</li>
+                </ul>
+            </div>
+
+            <!-- Best Model Performance Card -->
+            <div class="custom-card p-4 mb-4 shadow-sm" style="border-top: 4px solid var(--success-color);">
+                <h5 class="fw-bold mb-2 text-success">
+                    <i class="bi bi-trophy-fill me-2"></i>Production Model Selected
+                </h5>
+                <h4 class="fw-bold text-dark">Random Forest Classifier</h4>
+                <div class="d-flex justify-content-between border-bottom py-2 small">
+                    <span class="text-muted">Holdout Accuracy:</span>
+                    <strong class="text-dark">90.16%</strong>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2 small">
+                    <span class="text-muted">Clinical Sensitivity (Recall):</span>
+                    <strong class="text-success">92.86%</strong>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2 small">
+                    <span class="text-muted">Positive Predictive Value:</span>
+                    <strong class="text-dark">86.67%</strong>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-2 small">
+                    <span class="text-muted">F1-Score:</span>
+                    <strong class="text-dark">89.66%</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 small">
+                    <span class="text-muted">ROC-AUC Discriminator:</span>
+                    <strong class="text-info">0.9654</strong>
+                </div>
+            </div>
+
+            <!-- Academic Attribution Card -->
+            <div class="custom-card p-4 shadow-sm">
+                <h5 class="fw-bold mb-2 text-dark">
+                    <i class="bi bi-mortarboard-fill text-teal me-2"></i>Academic Attribution
+                </h5>
+                <p class="text-muted small mb-3">
+                    Developed as a Capstone Project for Introduction to Data Science (IDS).
+                </p>
+                <div class="p-3 rounded bg-light border small text-secondary">
+                    <div><strong>Project:</strong> CardioPredict</div>
+                    <div><strong>Review Stage:</strong> Final Academic Evaluation</div>
+                    <div><strong>Status:</strong> All Tests & Benchmarks Passed</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

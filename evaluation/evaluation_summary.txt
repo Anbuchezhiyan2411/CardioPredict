@@ -1,0 +1,37 @@
+=============================================================================
+CardioPredict: Comprehensive Model Evaluation & Benchmarking Summary (Phase 8)
+=============================================================================
+
+1. BEST MODEL: Random Forest Classifier
+   • Testing Accuracy : 90.16%
+   • Recall / Sensitivity: 92.86%
+   • Precision        : 86.67%
+   • F1-Score         : 89.66%
+   • ROC-AUC Score    : 0.9654
+   • Specificity      : 87.88%
+   • Strengths: Captures non-linear clinical interactions, highly resilient to
+     outliers, lowest joint error rate (only 2 False Negatives and 4 False Positives).
+   • Weaknesses: Slightly larger memory footprint than logistic regression;
+     requires ensemble aggregation at inference.
+
+2. WORST MODEL: Decision Tree Classifier
+   • Testing Accuracy : 78.69%
+   • F1-Score         : 77.19%
+   • ROC-AUC Score    : 0.8701
+   • Strengths: Highly interpretable visual flow.
+   • Weaknesses: Severe variance instability and high sensitivity to sample splits.
+
+3. KEY CLINICAL OBSERVATIONS:
+   • The top 3 diagnostic drivers determined by Gini Feature Importance are:
+     1. Thal (Thallium nuclear scan): ~14.5% importance
+     2. CA (Fluoroscopy vessel count): ~13.8% importance
+     3. Oldpeak (ST depression depth): ~12.2% importance
+   • Resting blood pressure and fasting blood sugar contributed lower individual
+     importance, aligning with Phase 5 ANOVA and correlation findings.
+
+4. RECOMMENDATIONS FOR PRODUCTION (PHASE 9 FLASK DEPLOYMENT):
+   • Deploy models/best_model.pkl (Random Forest) as the primary inference engine.
+   • Use models/scaler.pkl and models/feature_columns.pkl to normalize raw user inputs.
+   • Maintain confidence probability output in the web UI so doctors receive both
+     the discrete diagnosis and the calculated percentage risk.
+=============================================================================

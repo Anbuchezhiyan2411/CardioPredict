@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Diagnostic Assessment Report — CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <!-- Result Hero Card -->
+            <div class="custom-card shadow-lg mb-4 overflow-hidden border-0">
+                <div class="result-header-card {% if result.risk_level == 'Low Risk' %}result-header-low{% elif result.risk_level == 'High Risk' %}result-header-high{% else %}result-header-moderate{% endif %}">
+                    <div class="result-icon">
+                        {% if result.prediction == 1 %}
+                            <i class="bi bi-exclamation-octagon-fill"></i>
+                        {% else %}
+                            <i class="bi bi-check-circle-fill"></i>
+                        {% endif %}
+                    </div>
+                    <span class="badge bg-white text-dark text-uppercase px-3 py-2 fw-bold mb-2 shadow-sm">
+                        {{ result.risk_level }}
+                    </span>
+                    <h1 class="display-6 fw-bold mb-2">
+                        {{ result.prediction_label }}
+                    </h1>
+                    <p class="mb-3 opacity-90 fs-5">
+                        Model Confidence: <strong>{{ result.confidence_pct }}%</strong>
+                    </p>
+
+                    <!-- Confidence Bar -->
+                    <div class="mx-auto" style="max-width: 450px;">
+                        <div class="d-flex justify-content-between small text-white-50 mb-1">
+                            <span>Diagnostic Certainty</span>
+                            <span>{{ result.confidence_pct }}%</span>
+                        </div>
+                        <div class="confidence-meter">
+                            <div id="confidence-bar" class="confidence-fill" data-width="{{ result.confidence_pct }}" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Probability Distribution Breakdown -->
+                <div class="p-4 bg-white border-bottom">
+                    <div class="row g-3 text-center">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <div class="text-muted small text-uppercase fw-bold">Probability of Heart Disease</div>
+                                <div class="fs-3 fw-bold text-danger">{{ result.probability_disease_pct }}%</div>
+                                <small class="text-muted">Calculated by Random Forest Ensemble</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <div class="text-muted small text-uppercase fw-bold">Probability of Normal/Healthy Status</div>
+                                <div class="fs-3 fw-bold text-success">{{ result.probability_healthy_pct }}%</div>
+                                <small class="text-muted">Absence of hemodynamically significant stenosis</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clinical Recommendation Section -->
+                <div class="p-4 bg-white">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="p-2 rounded bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-prescription2 fs-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2" style="color: var(--primary-color);">Automated Clinical Recommendation</h5>
+                            <p class="text-muted mb-0 leading-relaxed">
+                                {{ result.clinical_recommendation }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Clinical Parameters Record Table -->
+            <div class="custom-card shadow-sm mb-4">
+                <div class="card-header-custom">
+                    <i class="bi bi-card-checklist text-teal"></i> Submitted Patient Physiological Parameters
+                </div>
+                <div class="p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" style="width: 35%;">Biomarker / Clinical Test</th>
+                                    <th scope="col" style="width: 65%;">Recorded Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key, val in result.patient_details.items() %}
+                                <tr>
+                                    <td class="fw-semibold text-secondary">{{ key }}</td>
+                                    <td class="fw-bold text-dark">{{ val }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <a href="{{ url_for('predict') }}" class="btn btn-primary-custom btn-lg shadow">
+                    <i class="bi bi-person-plus-fill me-2"></i> Assess Another Patient
+                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-bar-chart-line me-1"></i> View Analytics Dashboard
+                    </a>
+                    <button type="button" class="btn btn-outline-dark btn-lg" onclick="window.print()">
+                        <i class="bi bi-printer me-1"></i> Print Clinical Report
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

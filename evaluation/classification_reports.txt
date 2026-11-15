@@ -1,0 +1,64 @@
+=================================================================
+CLASSIFICATION REPORT: LOGISTIC REGRESSION
+=================================================================
+                   precision    recall  f1-score   support
+
+      Healthy (0)     0.9310    0.8182    0.8710        33
+Heart Disease (1)     0.8125    0.9286    0.8667        28
+
+         accuracy                         0.8689        61
+        macro avg     0.8718    0.8734    0.8688        61
+     weighted avg     0.8766    0.8689    0.8690        61
+
+
+=================================================================
+CLASSIFICATION REPORT: DECISION TREE
+=================================================================
+                   precision    recall  f1-score   support
+
+      Healthy (0)     0.8125    0.7879    0.8000        33
+Heart Disease (1)     0.7586    0.7857    0.7719        28
+
+         accuracy                         0.7869        61
+        macro avg     0.7856    0.7868    0.7860        61
+     weighted avg     0.7878    0.7869    0.7871        61
+
+
+=================================================================
+CLASSIFICATION REPORT: RANDOM FOREST
+=================================================================
+                   precision    recall  f1-score   support
+
+      Healthy (0)     0.9355    0.8788    0.9062        33
+Heart Disease (1)     0.8667    0.9286    0.8966        28
+
+         accuracy                         0.9016        61
+        macro avg     0.9011    0.9037    0.9014        61
+     weighted avg     0.9039    0.9016    0.9018        61
+
+
+=================================================================
+CLASSIFICATION REPORT: SUPPORT VECTOR MACHINE
+=================================================================
+                   precision    recall  f1-score   support
+
+      Healthy (0)     0.9000    0.8182    0.8571        33
+Heart Disease (1)     0.8065    0.8929    0.8475        28
+
+         accuracy                         0.8525        61
+        macro avg     0.8532    0.8555    0.8523        61
+     weighted avg     0.8571    0.8525    0.8527        61
+
+
+=================================================================
+CLASSIFICATION REPORT: K-NEAREST NEIGHBORS
+=================================================================
+                   precision    recall  f1-score   support
+
+      Healthy (0)     0.9259    0.7576    0.8333        33
+Heart Disease (1)     0.7647    0.9286    0.8387        28
+
+         accuracy                         0.8361        61
+        macro avg     0.8453    0.8431    0.8360        61
+     weighted avg     0.8519    0.8361    0.8358        61
+

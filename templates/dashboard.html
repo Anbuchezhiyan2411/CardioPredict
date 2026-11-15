@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Cardiovascular Analytics Dashboard — CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Dashboard Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col-lg-8">
+            <h2 class="fw-bold mb-1" style="color: var(--primary-color);">
+                <i class="bi bi-bar-chart-line-fill text-teal me-2"></i>Cardiovascular Analytics & ML Dashboard
+            </h2>
+            <p class="text-muted mb-0">
+                Comprehensive empirical evidence from exploratory clinical analysis (Phase 4) and machine learning model benchmarking (Phase 8).
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <span class="badge bg-success-subtle text-success-emphasis border border-success px-3 py-2 fs-6">
+                <i class="bi bi-cpu me-1"></i> Best Model: Random Forest (90.16%)
+            </span>
+        </div>
+    </div>
+
+    <!-- Top Statistical KPI Cards -->
+    <div class="row g-3 mb-5">
+        <div class="col-md-3 col-6">
+            <div class="custom-card p-3 stat-card">
+                <div class="stat-value">303</div>
+                <div class="stat-label mt-1">Total Patient Records</div>
+                <small class="text-muted">Cleveland Clinic Foundation</small>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="custom-card p-3 stat-card" style="border-left-color: #3b82f6;">
+                <div class="stat-value">54.4 <span class="fs-6 fw-normal text-muted">yrs</span></div>
+                <div class="stat-label mt-1">Average Cohort Age</div>
+                <small class="text-muted">Range: 29 to 77 years</small>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="custom-card p-3 stat-card" style="border-left-color: #10b981;">
+                <div class="stat-value">246.7 <span class="fs-6 fw-normal text-muted">mg/dl</span></div>
+                <div class="stat-label mt-1">Mean Cholesterol</div>
+                <small class="text-muted">Median: 241 mg/dl (Max: 564)</small>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="custom-card p-3 stat-card" style="border-left-color: #e11d48;">
+                <div class="stat-value">45.9%</div>
+                <div class="stat-label mt-1">Disease Prevalence</div>
+                <small class="text-muted">139 Diseased / 164 Healthy</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Navigation Tabs -->
+    <ul class="nav nav-pills mb-4 nav-fill custom-card p-2 shadow-sm" id="dashboardTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold py-2" id="ml-tab" data-bs-toggle="tab" data-bs-target="#ml-content" type="button" role="tab">
+                <i class="bi bi-cpu me-1"></i> 1. Model Evaluation & Benchmarking (Phase 8)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold py-2" id="eda-tab" data-bs-toggle="tab" data-bs-target="#eda-content" type="button" role="tab">
+                <i class="bi bi-pie-chart me-1"></i> 2. Clinical Exploratory Visualizations (Phase 4)
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="dashboardTabContent">
+        
+        <!-- TAB 1: MACHINE LEARNING EVALUATION (Phase 8) -->
+        <div class="tab-pane fade show active" id="ml-content" role="tabpanel">
+            
+            <!-- Model Comparison Table Card -->
+            <div class="custom-card shadow-sm mb-4">
+                <div class="card-header-custom justify-content-between">
+                    <div><i class="bi bi-table text-teal me-1"></i> Classifier Benchmark Performance Table</div>
+                    <span class="badge bg-primary text-white">Hold-out Test Set (n = 61)</span>
+                </div>
+                <div class="p-3">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 text-center">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-start">Algorithm</th>
+                                    <th>Train Acc</th>
+                                    <th>Test Acc</th>
+                                    <th>Precision</th>
+                                    <th>Recall (Sens.)</th>
+                                    <th>F1-Score</th>
+                                    <th>ROC-AUC</th>
+                                    <th>Specificity</th>
+                                    <th>Latency</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in model_comparison %}
+                                <tr {% if row['Algorithm'] == 'Random Forest' %}class="table-success fw-bold"{% endif %}>
+                                    <td class="text-start">
+                                        {{ row['Algorithm'] }}
+                                        {% if row['Algorithm'] == 'Random Forest' %}
+                                            <span class="badge bg-success ms-1"><i class="bi bi-trophy-fill"></i> Best</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ (row['Training Accuracy'] * 100)|round(1) }}%</td>
+                                    <td><span class="badge bg-primary-subtle text-primary-emphasis px-2 py-1">{{ (row['Testing Accuracy'] * 100)|round(1) }}%</span></td>
+                                    <td>{{ (row['Precision'] * 100)|round(1) }}%</td>
+                                    <td><span class="text-success fw-bold">{{ (row['Recall'] * 100)|round(1) }}%</span></td>
+                                    <td>{{ (row['F1 Score'] * 100)|round(1) }}%</td>
+                                    <td><span class="badge bg-info-subtle text-info-emphasis px-2 py-1">{{ row['ROC-AUC'] }}</span></td>
+                                    <td>{{ (row['Specificity'] * 100)|round(1) }}%</td>
+                                    <td class="text-muted small">{{ row['Prediction Time (ms/sample)'] }} ms</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ML Visualizations Grid -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-graph-up text-primary me-1"></i> Receiver Operating Characteristic (ROC) Curves</h6>
+                        <img src="{{ url_for('static', filename='images/roc_curve.png') }}" alt="ROC Curves" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Random Forest leads with AUC = <strong>0.9654</strong>, demonstrating strong separation across all operating thresholds.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-bullseye text-danger me-1"></i> Precision-Recall Curves</h6>
+                        <img src="{{ url_for('static', filename='images/precision_recall_curve.png') }}" alt="PR Curves" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Random Forest achieves an Average Precision of <strong>0.9678</strong>, maintaining high precision even at 90%+ recall levels.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-diagram-3 text-success me-1"></i> Gini Feature Importance (Random Forest)</h6>
+                        <img src="{{ url_for('static', filename='images/feature_importance.png') }}" alt="Feature Importance" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Thallium scan (14.8%), fluoroscopy vessel count (13.9%), and ST depression (12.3%) are the top 3 split contributors.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-grid-3x3 text-teal me-1"></i> Confusion Matrix: Best Model (Random Forest)</h6>
+                        <img src="{{ url_for('static', filename='images/confusion_matrix_random_forest.png') }}" alt="Confusion Matrix" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Correctly classified 26 of 28 diseased cases (92.9% Sensitivity) and 29 of 33 healthy cases (87.9% Specificity).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Metric Comparison Bar Chart -->
+            <div class="custom-card p-4 mb-4">
+                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-bar-chart-steps text-primary me-1"></i> Cross-Algorithm Metric Benchmark</h6>
+                <img src="{{ url_for('static', filename='images/model_accuracy_comparison.png') }}" alt="Metric Benchmark" class="dashboard-img">
+            </div>
+
+            <!-- Evaluation Summary Box -->
+            <div class="custom-card p-4" style="background: #f8fafc; border-left: 4px solid var(--teal-accent);">
+                <h5 class="fw-bold mb-2" style="color: var(--primary-color);"><i class="bi bi-file-text me-2"></i>Executive Model Evaluation Summary</h5>
+                <pre class="bg-white p-3 rounded border text-secondary mb-0 small" style="white-space: pre-wrap; font-family: monospace;">{{ evaluation_summary }}</pre>
+            </div>
+        </div>
+
+        <!-- TAB 2: CLINICAL EXPLORATORY VISUALIZATIONS (Phase 4) -->
+        <div class="tab-pane fade" id="eda-content" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">1. Age Distribution with KDE</h6>
+                        <img src="{{ url_for('static', filename='images/01_histogram_age.png') }}" alt="Age Histogram" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Risk increases sharply past age 55; healthy patients dominate under 50.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">2. Patient Frequency by Gender</h6>
+                        <img src="{{ url_for('static', filename='images/02_countplot_gender.png') }}" alt="Gender Plot" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Males exhibit a 55.3% disease rate vs. 25.8% in females (Chi-square p = 2.67e-6).</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">3. Heart Disease Prevalence by Chest Pain Type</h6>
+                        <img src="{{ url_for('static', filename='images/03_barchart_chestpain.png') }}" alt="Chest Pain Plot" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">The Angina Paradox: Asymptomatic (Type 4) patients show 72.9% disease rate.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">4. Overall Cohort Diagnosis Balance</h6>
+                        <img src="{{ url_for('static', filename='images/04_piechart_target.png') }}" alt="Pie Chart" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Well-balanced 54.1% Healthy vs. 45.9% Disease distribution.</p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="custom-card p-3">
+                        <h6 class="fw-bold text-dark mb-2">5. Multi-Feature Box Plots & Outliers</h6>
+                        <img src="{{ url_for('static', filename='images/05_boxplot_clinical_features.png') }}" alt="Box Plots" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Clear median separation in MaxHR (162 vs 142 bpm); outliers highlighted in Cholesterol and RestingBP.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">6. Violin Plot: Max Heart Rate Density</h6>
+                        <img src="{{ url_for('static', filename='images/06_violinplot_maxhr.png') }}" alt="Violin Plot" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Depressed peak heart rate reflects chronotropic incompetence in cardiac patients.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">7. Age vs. Max Heart Rate Regression Trends</h6>
+                        <img src="{{ url_for('static', filename='images/07_scatterplot_age_maxhr.png') }}" alt="Scatter Plot" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Both cohorts exhibit downward age trends; diseased trendline sits ~20 bpm lower across all ages.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">8. Full Pearson Correlation Matrix (14x14)</h6>
+                        <img src="{{ url_for('static', filename='images/09_correlation_heatmap.png') }}" alt="Correlation Heatmap" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">No multicollinearity (|r| &lt; 0.60); strongest targets are Thal (+0.52) and MaxHR (-0.42).</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-card p-3 h-100">
+                        <h6 class="fw-bold text-dark mb-2">9. Oldpeak ST Depression Probability Density</h6>
+                        <img src="{{ url_for('static', filename='images/10_distribution_oldpeak.png') }}" alt="Oldpeak KDE" class="dashboard-img">
+                        <p class="text-muted small mt-2 mb-0">Healthy hearts peak sharply at 0.0 mm; diseased hearts spread up to 6.2 mm.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

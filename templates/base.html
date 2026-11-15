@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CardioPredict — Heart Disease Prediction & Analytics{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🫀</text></svg>">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <i class="bi bi-heart-pulse-fill brand-heart"></i>
+                <span>Cardio<span style="color: var(--teal-light);">Predict</span></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'predict' %}active{% endif %}" href="{{ url_for('predict') }}">
+                            <i class="bi bi-activity me-1"></i> Prediction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                            <i class="bi bi-bar-chart-line me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}">
+                            <i class="bi bi-info-circle me-1"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-sm btn-primary-custom" href="{{ url_for('predict') }}">
+                            <i class="bi bi-clipboard2-pulse me-1"></i> Assess Patient
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="footer-custom mt-5">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-5 col-md-6">
+                    <h5 class="text-white fw-bold mb-3">
+                        <i class="bi bi-heart-pulse-fill text-danger me-2"></i>CardioPredict
+                    </h5>
+                    <p class="text-muted small pe-lg-4">
+                        An advanced machine learning decision-support platform for early coronary artery disease risk assessment. Developed for the Introduction to Data Science (IDS) Capstone Project using the Cleveland Clinic Foundation dataset.
+                    </p>
+                    <div class="d-flex gap-3 text-muted small">
+                        <span><i class="bi bi-shield-check text-teal me-1"></i> HIPAA/Academic Simulation</span>
+                        <span><i class="bi bi-cpu text-teal me-1"></i> Random Forest Ensemble</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="text-white fw-bold mb-3">Platform Navigation</h6>
+                    <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                        <li><a href="{{ url_for('home') }}"><i class="bi bi-chevron-right me-1"></i> Home</a></li>
+                        <li><a href="{{ url_for('predict') }}"><i class="bi bi-chevron-right me-1"></i> Clinical Prediction Form</a></li>
+                        <li><a href="{{ url_for('dashboard') }}"><i class="bi bi-chevron-right me-1"></i> Analytics & EDA Dashboard</a></li>
+                        <li><a href="{{ url_for('about') }}"><i class="bi bi-chevron-right me-1"></i> Methodology & Architecture</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <h6 class="text-white fw-bold mb-3">Academic Attribution</h6>
+                    <p class="text-muted small mb-1">
+                        <strong>Project:</strong> CardioPredict (IDS Capstone Review)
+                    </p>
+                    <p class="text-muted small mb-1">
+                        <strong>Benchmark Dataset:</strong> UCI Cleveland Clinic Repository
+                    </p>
+                    <p class="text-muted small mb-3">
+                        <strong>Frameworks:</strong> Python 3.13 • Scikit-Learn • Flask • Bootstrap 5
+                    </p>
+                    <span class="badge bg-secondary-subtle text-light-emphasis border border-secondary px-3 py-2 small">
+                        <i class="bi bi-git me-1"></i> Ready for GitHub & College Review
+                    </span>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="row align-items-center small text-muted">
+                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    &copy; 2026 CardioPredict. Built with rigor for academic & research presentation.
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <span class="text-teal"><i class="bi bi-check-circle-fill text-success me-1"></i> Production Model Status: Active</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Application JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

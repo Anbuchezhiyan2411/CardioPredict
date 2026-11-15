@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}CardioPredict — AI-Driven Cardiac Risk Stratification Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container position-relative">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-7">
+                <div class="hero-badge mb-3">
+                    <i class="bi bi-shield-fill-check text-success"></i>
+                    <span>Production Machine Learning Pipeline • Phase 9 Active</span>
+                </div>
+                <h1 class="hero-title mb-3">
+                    Cardio<span style="color: var(--teal-light);">Predict</span>: Intelligent Cardiac Risk Analytics
+                </h1>
+                <p class="hero-subtitle mb-4">
+                    A machine learning clinical decision-support system designed to detect early-stage coronary artery disease with <strong>90.16% test accuracy</strong> and <strong>92.86% clinical sensitivity</strong> using 13 verified pathophysiological biomarkers.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('predict') }}" class="btn btn-primary-custom btn-lg">
+                        <i class="bi bi-clipboard2-pulse me-2"></i> Start Patient Assessment
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-custom btn-lg">
+                        <i class="bi bi-graph-up-arrow me-2"></i> View Analytics Dashboard
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-custom btn-lg">
+                        <i class="bi bi-journal-medical me-2"></i> About Project
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div class="p-4 rounded-4" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.18);">
+                    <div class="d-inline-flex p-3 rounded-circle bg-white text-danger shadow-lg mb-3">
+                        <i class="bi bi-heart-pulse-fill" style="font-size: 3.5rem;"></i>
+                    </div>
+                    <h4 class="text-white fw-bold mb-1">Random Forest Classifier</h4>
+                    <p class="text-white-50 small mb-3">Benchmarked against Logistic Regression, SVM, KNN & Decision Trees</p>
+                    <div class="row g-2 text-start">
+                        <div class="col-6">
+                            <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                                <div class="text-white-50 small">Testing Accuracy</div>
+                                <div class="text-white fw-bold fs-5">90.16%</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                                <div class="text-white-50 small">Clinical Sensitivity</div>
+                                <div class="text-white fw-bold fs-5 text-success">92.86%</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                                <div class="text-white-50 small">ROC-AUC Score</div>
+                                <div class="text-white fw-bold fs-5 text-info">0.9654</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 rounded bg-white bg-opacity-10 border border-white border-opacity-10">
+                                <div class="text-white-50 small">Inference Latency</div>
+                                <div class="text-white fw-bold fs-5 text-warning">&lt; 0.15 ms</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Stats Counter Section -->
+<section class="py-5" style="margin-top: -2rem;">
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-md-3 col-6">
+                <div class="custom-card p-4 stat-card text-center">
+                    <div class="stat-value">303</div>
+                    <div class="stat-label mt-1">Patient Registry Cases</div>
+                    <small class="text-muted">Cleveland Clinic Foundation</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="custom-card p-4 stat-card text-center" style="border-left-color: #3b82f6;">
+                    <div class="stat-value">13</div>
+                    <div class="stat-label mt-1">Clinical Features</div>
+                    <small class="text-muted">Vascular, Electrical, Metabolic</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="custom-card p-4 stat-card text-center" style="border-left-color: #10b981;">
+                    <div class="stat-value">90.16%</div>
+                    <div class="stat-label mt-1">Diagnostic Accuracy</div>
+                    <small class="text-muted">Holdout Test Set Benchmark</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="custom-card p-4 stat-card text-center" style="border-left-color: #f59e0b;">
+                    <div class="stat-value">0.9654</div>
+                    <div class="stat-label mt-1">ROC-AUC Discrim.</div>
+                    <small class="text-muted">Threshold-Independent Score</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Platform Architecture & Diagnostic Capabilities -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-teal-subtle text-teal fw-bold px-3 py-2 rounded-pill text-uppercase mb-2">
+                Clinical Workflow
+            </span>
+            <h2 class="fw-bold" style="color: var(--primary-color);">Rigorous 4-Stage Diagnostic Pipeline</h2>
+            <p class="text-muted">How CardioPredict ingests, standardizes, and evaluates multi-modal cardiovascular parameters in real time.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="custom-card p-4 h-100 text-center">
+                    <div class="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3">
+                        <i class="bi bi-file-earmark-medical fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">1. Intake & Schema</h5>
+                    <p class="text-muted small mb-0">
+                        Ingests 13 vital signs across demographics, metabolic panels, treadmill stress ECGs, and nuclear thallium scintigraphy.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="custom-card p-4 h-100 text-center">
+                    <div class="d-inline-flex p-3 rounded-circle bg-info bg-opacity-10 text-info mb-3">
+                        <i class="bi bi-sliders fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">2. Standardization</h5>
+                    <p class="text-muted small mb-0">
+                        Applies training-locked <code>StandardScaler</code> normalization to prevent features with large units (Cholesterol) from biasing the model.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="custom-card p-4 h-100 text-center">
+                    <div class="d-inline-flex p-3 rounded-circle bg-success bg-opacity-10 text-success mb-3">
+                        <i class="bi bi-diagram-3 fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">3. Ensemble Inference</h5>
+                    <p class="text-muted small mb-0">
+                        100 de-correlated Random Forest decision trees evaluate non-linear multi-variable interactions simultaneously without data leakage.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="custom-card p-4 h-100 text-center">
+                    <div class="d-inline-flex p-3 rounded-circle bg-danger bg-opacity-10 text-danger mb-3">
+                        <i class="bi bi-clipboard2-check fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">4. Risk Stratification</h5>
+                    <p class="text-muted small mb-0">
+                        Outputs calibrated confidence percentages, classifies into Low, Moderate, or High risk tiers, and provides targeted clinical recommendations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);">
+    <div class="container text-center py-4">
+        <h3 class="fw-bold mb-3" style="color: var(--primary-dark);">Ready to Perform a Patient Risk Evaluation?</h3>
+        <p class="text-muted max-w-600 mx-auto mb-4">
+            Test the live inference pipeline using real clinical values or pre-populate with our verified sample patient profiles.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('predict') }}" class="btn btn-primary-custom btn-lg">
+                <i class="bi bi-arrow-right-circle me-2"></i> Open Prediction Console
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg bg-white">
+                <i class="bi bi-bar-chart-steps me-2"></i> Explore Analytical Charts
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
